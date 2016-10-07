@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace CustomExtentions {
-    public static class Mathf {
+    public static class MathExtended {
         public static T Clamp<T>(T value, T min, T max) where T : IComparable<T> {
             if (value.CompareTo(min) < 0) {
                 return min;
