@@ -1,65 +1,81 @@
-﻿using System;
-using CustomExtentions;
+﻿namespace TestingTheConsole
+{
+    using System;
+    using CustomExtentions;
 
-namespace TestingTheConsole {
-    public class Enemy : Entity {
-        public float speed;
+    /// <summary>
+    /// An simple enemy for the game with a simple AI.
+    /// Will continually move from right to left before going back to the right when it reaches the left.
+    /// </summary>
+    public class Enemy : Entity
+    {
+        private int timeSinceLastMoveMS;
 
-        public float maxSpeed = 100;
+        private int sleepTimeMS;
 
-        public int timeBetweenMovesMS {
-            get {
-                return (int)(1000 / speed);
+        public Enemy(float speed, float maxSpeed = 100) : base('#', Console.WindowWidth - 1, Game.Rand.Next(0, Console.WindowHeight - 2))
+        {
+            this.Speed = speed;
+            this.MaxSpeed = maxSpeed;
+            this.sleepTimeMS = Game.Rand.Next(0, 4000);
+            this.Hidden = true;
+        }
+
+        public float Speed { get; set; }
+
+        public float MaxSpeed { get; set; }
+
+        public int TimeBetweenMovesMS
+        {
+            get
+            {
+                return (int)(1000 / this.Speed);
             }
         }
 
-        int timeSinceLastMoveMS;
-
-        int sleepTimeMS;
-
-        public Enemy(float speed, float maxSpeed = 100) : base('#', Console.WindowWidth - 1, Game.rand.Next(0, Console.WindowHeight - 2)) {
-            this.speed = speed;
-            this.maxSpeed = maxSpeed;
-            this.sleepTimeMS = Game.rand.Next(0, 4000);
-            this.hidden = true;
-        }
-
-        public override void Update(int deltaTimeMS) {
-            if (this.sleepTimeMS > 0) {
+        public override void Update(int deltaTimeMS)
+        {
+            if (this.sleepTimeMS > 0)
+            {
                 this.sleepTimeMS -= deltaTimeMS;
-                if (this.sleepTimeMS <= 0) {
+                if (this.sleepTimeMS <= 0)
+                {
                     this.timeSinceLastMoveMS += -this.sleepTimeMS;
                     this.sleepTimeMS = 0;
                 }
-                else {
+                else
+                {
                     return;
                 }
             }
-            else {
+            else
+            {
                 this.timeSinceLastMoveMS += deltaTimeMS;
-                hidden = false;
+                this.Hidden = false;
             }
 
-            if (this.timeSinceLastMoveMS < this.timeBetweenMovesMS) {
+            if (this.timeSinceLastMoveMS < this.TimeBetweenMovesMS)
+            {
                 return;
             }
 
-            this.timeSinceLastMoveMS -= this.timeBetweenMovesMS;
+            this.timeSinceLastMoveMS -= this.TimeBetweenMovesMS;
 
-            this.position.x -= 1;
+            this.Position.X -= 1;
 
-            if (this.position.x <= 0) {
-                this.position.x = Console.WindowWidth - 1;
-                this.position.y = Game.rand.Next(0, Console.WindowHeight - 2);
+            if (this.Position.X <= 0)
+            {
+                this.Position.X = Console.WindowWidth - 1;
+                this.Position.Y = Game.Rand.Next(0, Console.WindowHeight - 2);
 
-                this.sleepTimeMS = Game.rand.Next(500, 2500);
+                this.sleepTimeMS = Game.Rand.Next(500, 2500);
 
-                hidden = true;
+                this.Hidden = true;
 
-                speed = MathExtended.Clamp(speed * 1.25f, 0, maxSpeed);
+                this.Speed = MathExtended.Clamp(this.Speed * 1.25f, 0, this.MaxSpeed);
             }
 
-            Update(0);
+            this.Update(0);
         }
     }
 }

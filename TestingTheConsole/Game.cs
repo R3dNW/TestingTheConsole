@@ -1,54 +1,64 @@
-﻿using System.Collections.Generic;
-using System;
-using System.Diagnostics;
-using System.Timers;
+﻿namespace TestingTheConsole
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
 
-namespace TestingTheConsole {
-    public class Game {
-        Entity player;
-        List<Entity> enemies;
+    /// <summary>
+    /// This is the main Game class.
+    /// </summary>
+    public class Game
+    {
+        private Entity player;
+        private List<Entity> enemies;
 
-        public static Random rand { get; protected set; }
+        private Stopwatch stopwatch;
 
-        Stopwatch stopwatch;
+        private long timeAtLastUpdateMS;
 
-        long timeAtLastUpdateMS;
-        
-        public Game() {
+        public Game()
+        {
             Console.CursorVisible = false;
 
-            rand = new Random();
+            Rand = new Random();
 
             this.player = new Player();
             this.enemies = new List<Entity>();
 
-            for (int i = 0; i < 10; i++) {
-                this.enemies.Add(new Enemy(((float)rand.NextDouble() + 0.5f) * 7.5f));
+            for (int i = 0; i < 10; i++)
+            {
+                this.enemies.Add(new Enemy(((float)Rand.NextDouble() + 0.5f) * 7.5f));
             }
 
-            stopwatch = new Stopwatch();
-            stopwatch.Start();
+            this.stopwatch = new Stopwatch();
+            this.stopwatch.Start();
         }
 
-        public void UpdateLoop() {
-            while (true) {
-                int deltaTimeMS = (int)(stopwatch.ElapsedMilliseconds - timeAtLastUpdateMS);
+        public static Random Rand { get; protected set; }
 
-                timeAtLastUpdateMS = stopwatch.ElapsedMilliseconds;
+        public void UpdateLoop()
+        {
+            while (true)
+            {
+                int deltaTimeMS = (int)(this.stopwatch.ElapsedMilliseconds - this.timeAtLastUpdateMS);
 
-                player.Update(deltaTimeMS);
-                foreach (Entity enemy in enemies) {
+                this.timeAtLastUpdateMS = this.stopwatch.ElapsedMilliseconds;
+
+                this.player.Update(deltaTimeMS);
+                foreach (Entity enemy in this.enemies)
+                {
                     enemy.Update(deltaTimeMS);
                 }
 
-                player.Draw();
-                foreach (Entity enemy in enemies) {
+                this.player.Draw();
+                foreach (Entity enemy in this.enemies)
+                {
                     enemy.Draw();
                 }
 
                 Console.SetCursorPosition(0, Console.WindowHeight - 1);
                 Console.Write("Time Since Start: ");
-                Console.Write((float)timeAtLastUpdateMS / 1000.0f);
+                Console.Write((float)this.timeAtLastUpdateMS / 1000.0f);
                 Console.Write("        FPS: ");
                 Console.Write(1000.0f / (float)deltaTimeMS);
             }

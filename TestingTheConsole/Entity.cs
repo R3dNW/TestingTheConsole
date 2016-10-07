@@ -1,63 +1,80 @@
-﻿using System;
-using CustomExtentions;
-using System.Linq;
+﻿namespace TestingTheConsole
+{
+    using System;
+    using CustomExtentions;
 
-namespace TestingTheConsole {
-    public abstract class Entity {
-        Position _position;
+    /// <summary>
+    /// An entity class to deal with all entities within the game.
+    /// i.e. Players, Enemies etc.
+    /// </summary>
+    public abstract class Entity
+    {
+        private Position position;
+        private Position lastDrawPosition;
+        private bool hidden = false;
 
-        public Position position {
-            get {
-                return _position;
+        public Entity(char symbol)
+        {
+            this.Symbol = symbol;
+            this.Position = new Position();
+        }
+
+        public Entity(char symbol, Position position)
+        {
+            this.Symbol = symbol;
+            this.Position = position;
+        }
+
+        public Entity(char symbol, int x, int y)
+        {
+            this.Symbol = symbol;
+            this.Position = new Position(x, y);
+        }
+
+        public Position Position
+        {
+            get
+            {
+                return this.position;
             }
-            protected set {
-                if (value.x < 0 || value.x >= Console.WindowWidth || value.y < 0 || value.y >= Console.WindowWidth) {
+
+            protected set
+            {
+                if (value.X < 0 || value.X >= Console.WindowWidth || value.Y < 0 || value.Y >= Console.WindowWidth)
+                {
                     throw new Exception("Position -- Cannot have a position outside of the console's coordinates");
                 }
 
-                _position = value;
+                this.position = value;
             }
         }
 
-        protected char symbol;
+        public bool Hidden { get; protected set; }
 
-        protected bool hidden = false;
+        protected char Symbol { get; set; }
 
-        public Entity(char symbol) {
-            this.symbol = symbol;
-            this.position = new Position();
-        }
-
-        public Entity(char symbol, Position position) {
-            this.symbol = symbol;
-            this.position = position;
-        }
-
-        public Entity(char symbol, int x, int y) {
-            this.symbol = symbol;
-            this.position = new Position(x, y);
-        }
-
-        protected Position lastDrawPosition;
-
-        public virtual void Draw() {
-            if (position == lastDrawPosition) {
+        public virtual void Draw()
+        {
+            if (this.Position == this.lastDrawPosition)
+            {
                 return;
             }
 
-            if (lastDrawPosition != null) {
-                Console.SetCursorPosition(lastDrawPosition.x, lastDrawPosition.y);
+            if (this.lastDrawPosition != null)
+            {
+                Console.SetCursorPosition(this.lastDrawPosition.X, this.lastDrawPosition.Y);
                 Console.Write(' ');
             }
 
-            if (hidden) {
+            if (this.Hidden)
+            {
                 return;
             }
 
-            lastDrawPosition = position.Clone();
+            this.lastDrawPosition = this.Position.Clone();
 
-            Console.SetCursorPosition(position.x, position.y);
-            Console.Write(symbol);
+            Console.SetCursorPosition(this.Position.X, this.Position.Y);
+            Console.Write(this.Symbol);
         }
 
         public abstract void Update(int deltaTimeMS);

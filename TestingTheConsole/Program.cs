@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TestingTheConsole {
-    class Program {
-        static void Main(string[] args) {
+﻿namespace TestingTheConsole
+{
+    /// <summary>
+    /// The class that is used to start the program.
+    /// </summary>
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
             Game game = new Game();
 
             game.UpdateLoop();

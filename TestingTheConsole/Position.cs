@@ -1,51 +1,68 @@
-﻿using System;
-using System.Linq;
+﻿namespace TestingTheConsole
+{
+    using System;
 
-namespace TestingTheConsole {
-    public class Position {
-        int _x = 0;
-        public int x {
-            get {
-                return this._x;
+    /// <summary>
+    /// A basic class to store positions in the console.
+    /// These value will be integers and will be 2-Dimensional.
+    /// </summary>
+    public class Position
+    {
+        private int x = 0;
+        private int y = 0;
+
+        public Position()
+        {
+            this.X = 0;
+            this.Y = 0;
+        }
+
+        public Position(int x, int y)
+        {
+            this.X = x;
+            this.Y = y;
+        }
+        
+        public int X
+        {
+            get
+            {
+                return this.x;
             }
-            set {
+
+            set
+            {
                 /*if (value < 0 || value > Console.WindowWidth) {
                     throw new Exception("Position -- Cannot have a position outside of the console's coordinates");
                 }*/
-                this._x = value;
+                this.x = value;
             }
         }
 
-
-        int _y = 0;
-        public int y {
-            get {
-                return this._y;
+        public int Y
+        {
+            get
+            {
+                return this.y;
             }
-            set {
+
+            set
+            {
                 /*if (value < 0 || value > Console.WindowWidth) {
                     throw new Exception("Position -- Cannot have a position outside of the console's coordinates");
                 }*/
-                this._y = value;
+                this.y = value;
             }
         }
 
-        public Position() {
-            this.x = 0;
-            this.y = 0;
+        public static Position Clone(Position original)
+        {
+            return new Position(original.X, original.Y);
         }
 
-        public Position(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        public Position Clone() {
+        public Position Clone()
+        {
             return Clone(this);
-        }
-
-        public static Position Clone(Position original) {
-            return new Position(original.x, original.y);
         }
     }
 }
