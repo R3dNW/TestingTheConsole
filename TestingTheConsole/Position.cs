@@ -8,7 +8,7 @@
     /// </summary>
     public class Position : IEquatable<Position>
     {
-        private static Position zero = new Position(0, 0);
+        public static Position zero = new Position(0, 0);
 
         private int x = 0;
         private int y = 0;
@@ -24,15 +24,7 @@
             this.X = x;
             this.Y = y;
         }
-
-        public static Position Zero
-        {
-            get
-            {
-                return zero;
-            }
-        }
-
+        
         public int X
         {
             get { return this.x; }
@@ -51,18 +43,7 @@
         {
             get
             {
-                return !Bounds.ConsoleBounds.BoundsContainPoint(this);
-            }
-        }
-
-        public Position Absolute
-        {
-            get
-            {
-                int max = Math.Max(this.X, this.Y);
-                return new Position(
-                    this.X / max, 
-                    this.Y / max);
+                return Bounds.ConsoleBounds.BoundsContainPoint(this);
             }
         }
 
