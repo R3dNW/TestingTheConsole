@@ -22,6 +22,7 @@
         private int score;
 
         private Bounds gameBounds;
+        private Bounds gameInfoBounds;
         private Bounds entityBounds;
 
         public Game()
@@ -36,15 +37,21 @@
             Console.CursorVisible = false;
             Console.Clear();
 
-            this.gameBounds = new Bounds(0, Bounds.ConsoleBounds.XMax, 0, Bounds.ConsoleBounds.YMax - 3);
+            this.gameBounds = new Bounds(
+                0,
+                Bounds.ConsoleBounds.XMax, 
+                0,
+                Bounds.ConsoleBounds.YMax - 2);
 
             ConsoleExtended.DrawBounds(this.gameBounds);
 
-            ConsoleExtended.DrawBounds(new Bounds(
-                this.gameBounds.XMin, 
-                this.gameBounds.XMax, 
-                this.gameBounds.YMax, 
-                this.gameBounds.YMax + 2));
+            this.gameInfoBounds = new Bounds(
+                this.gameBounds.XMin,
+                this.gameBounds.XMax,
+                this.gameBounds.YMax,
+                this.gameBounds.YMax + 2);
+
+            ConsoleExtended.DrawBounds(gameInfoBounds);
 
             this.entityBounds = new Bounds(
                 this.gameBounds.XMin + 1,
@@ -60,7 +67,7 @@
             for (int i = 0; i < 20; i++)
             {
                 this.enemies.Add(
-                    new Enemy((((float)Rand.NextDouble() * 0.5f) + 0.75f) * 12.5f, this.entityBounds));
+                    new Enemy((((float)Rand.NextDouble() * 0.5f) + 0.75f) * 12.5f, this.entityBounds, 125));
             }
 
             this.stopwatch = new Stopwatch();
@@ -107,7 +114,7 @@
                     enemy.Draw();
                 }
 
-                Console.SetCursorPosition(2, Console.WindowHeight - 3);
+                Console.SetCursorPosition(2, Console.WindowHeight - 2);
                 Console.Write(string.Format("Score: {0}", this.score));
             }
         }
@@ -120,25 +127,82 @@
         private void GameOver()
         {
             Console.Clear();
-            Console.SetCursorPosition(2, 1);
-            Console.WriteLine("Game Over!");
 
-            ConsoleExtended.DrawBounds(this.gameBounds);
+            ConsoleExtended.DrawArray(GameOverText, Position.zero);
 
-            Console.SetCursorPosition(2, 3);
-            if (this.score > 0)
+            ConsoleExtended.DrawBounds(this.gameInfoBounds);
+
+            Console.SetCursorPosition(5, Console.WindowHeight - 2);
+            if (this.score < 20)
             {
-                Console.WriteLine(string.Format("Score: {0}", this.score));
+                Console.Write(string.Format("Pathetic... You scored {0} Points", this.score));
+            }
+            else if (this.score < 50)
+            {
+                Console.Write(string.Format("Just {0} Points... Really?", this.score));
+            }
+            else if (this.score < 100)
+            {
+                Console.Write(string.Format("Okay then: {0} Points. That makes you... average...", this.score));
+            }
+            else if (this.score < 250)
+            {
+                Console.Write(string.Format("Decent: {0} Points. Not great, but decent.", this.score));
+            }
+            else if (this.score < 500)
+            {
+                Console.Write(string.Format("Oohhh: {0} Points. Getting a bit good are we? Nope", this.score));
+            }
+            else if (this.score < 1000)
+            {
+                Console.Write(string.Format("*Slow Clap* {0} Points.", this.score));
+            }
+            else if (this.score < 2500)
+            {
+                Console.Write(string.Format("{0} Points? I could do better than that...", this.score));
+            }
+            else if (this.score < 5000)
+            {
+                Console.Write(string.Format("Somebody''s using a hacked client or something -- {0} Points", this.score));
             }
             else
             {
-                Console.WriteLine("Pathetic -- You Scored 0 Points");
+                Console.Write(string.Format("Okay You're definitely cheating -- {0} Points", this.score));
             }
 
-            Console.SetCursorPosition(0, Console.WindowHeight - 2);
-            Console.ReadLine(); // Stops the console from closing
+            Console.SetCursorPosition(0, 0);
+            Console.ReadLine(); // Makes the game wait for return to be pressed before restarting
 
             Instance = null;
+
+            Instance = new Game();
+            Instance.UpdateLoop();
         }
+
+        private static string[] GameOverText = new string[] 
+        {   "================================================================================",
+            "=        GGGGGGG           AAAAAAAA      MMM          MMM  EEEEEEEEEEEEEEEE    =",
+            "=      GGGGGGGGGGG        AAAAAAAAAA     MMMM        MMMM  EEEEEEEEEEEEEEEE    =",
+            "=     GGGG     GGGG      AAA      AAA    MMMMM      MMMMM  EEE                 =",
+            "=    GGG         GGG    AAA        AAA   MMMMMM    MMMMMM  EEE                 =",
+            "=    GGG               AAA          AAA  MMM MMM  MMM MMM  EEEEEEEEEEEEE       =",
+            "=    GGG      GGGGGGG  AAAAAAAAAAAAAAAA  MMM  MMMMMM  MMM  EEEEEEEEEEEEE       =",
+            "=    GGG         GGG   AAAAAAAAAAAAAAAA  MMM   MMMM   MMM  EEE                 =",
+            "=     GGGG     GGGG    AAA          AAA  MMM    MM    MMM  EEE                 =",
+            "=      GGGGGGGGGGG     AAA          AAA  MMM          MMM  EEEEEEEEEEEEEEEE    =",
+            "=        GGGGGGG       AAA          AAA  MMM          MMM  EEEEEEEEEEEEEEEE    =",
+            "=                                                                              =",
+            "=        OOOOOOOO      VVV          VVV  EEEEEEEEEEEEEEEE  RRRRRRRRRRRRR       =",
+            "=      OOOOOOOOOOOO    VVV          VVV  EEEEEEEEEEEEEEEE  RRRRRRRRRRRRRR      =",
+            "=     OOOO      OOOO    VVV        VVV   EEE               RRR         RRR     =",
+            "=    OOO          OOO    VVV      VVV    EEE               RRR          RRR    =",
+            "=    OOO          OOO    VVV      VVV    EEEEEEEEEEEEE     RRRRRRRRRRRRRR      =",
+            "=    OOO          OOO     VVV    VVV     EEEEEEEEEEEEE     RRRRRRRRRRRRRR      =",
+            "=    OOO          OOO      VVV  VVV      EEE               RRR         RRR     =",
+            "=     OOOO      OOOO       VVV  VVV      EEE               RRR          RRR    =",
+            "=      OOOOOOOOOOOO         VVVVVV       EEEEEEEEEEEEEEEE  RRR          RRR    =",
+            "=        OOOOOOOO            VVVV        EEEEEEEEEEEEEEEE  RRR          RRR    =",
+            "================================================================================",
+        };
     }
 }

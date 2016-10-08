@@ -17,6 +17,8 @@
 
             Console.SetCursorPosition(bounds.XMin, bounds.YMax);
             Console.WriteLine(new string(symbol, bounds.Box.Width + 1));
+
+            Console.SetCursorPosition(0, 0);
         }
 
         public static void SetCursorPosition(Position position)
@@ -31,7 +33,7 @@
 
         public static void DrawSymbol(char symbol, Position position)
         {
-            SetCursorPosition(position);
+            ConsoleExtended.SetCursorPosition(position);
             Console.Write(symbol);
         }
 
@@ -39,6 +41,20 @@
         {
             Console.SetCursorPosition(xPos, yPos);
             Console.Write(symbol);
+        }
+
+        public static void DrawArray<T>(T[] array, Position startPosition)
+        {
+            int yPos = startPosition.Y;
+
+            foreach (T element in array)
+            {
+                Console.SetCursorPosition(startPosition.X, yPos);
+                Console.Write(element.ToString());
+                yPos++;
+            }
+
+            Console.SetCursorPosition(0, 0);
         }
     }
 }

@@ -8,6 +8,8 @@
     /// </summary>
     public class Position : IEquatable<Position>
     {
+        public static Position zero = new Position(0, 0);
+
         private int x = 0;
         private int y = 0;
 

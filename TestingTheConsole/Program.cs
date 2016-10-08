@@ -7,9 +7,9 @@
     {
         public static void Main(string[] args)
         {
-            Game game = new Game();
+            new Game();
 
-            game.UpdateLoop();
+            Game.Instance.UpdateLoop();
         }
     }
 }
