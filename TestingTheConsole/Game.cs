@@ -10,6 +10,33 @@
     /// </summary>
     public class Game
     {
+        private static string[] gameOverText = new string[]
+        {
+            "================================================================================",
+            "=        GGGGGGG           AAAAAAAA      MMM          MMM  EEEEEEEEEEEEEEEE    =",
+            "=      GGGGGGGGGGG        AAAAAAAAAA     MMMM        MMMM  EEEEEEEEEEEEEEEE    =",
+            "=     GGGG     GGGG      AAA      AAA    MMMMM      MMMMM  EEE                 =",
+            "=    GGG         GGG    AAA        AAA   MMMMMM    MMMMMM  EEE                 =",
+            "=    GGG               AAA          AAA  MMM MMM  MMM MMM  EEEEEEEEEEEEE       =",
+            "=    GGG      GGGGGGG  AAAAAAAAAAAAAAAA  MMM  MMMMMM  MMM  EEEEEEEEEEEEE       =",
+            "=    GGG         GGG   AAAAAAAAAAAAAAAA  MMM   MMMM   MMM  EEE                 =",
+            "=     GGGG     GGGG    AAA          AAA  MMM    MM    MMM  EEE                 =",
+            "=      GGGGGGGGGGG     AAA          AAA  MMM          MMM  EEEEEEEEEEEEEEEE    =",
+            "=        GGGGGGG       AAA          AAA  MMM          MMM  EEEEEEEEEEEEEEEE    =",
+            "=                                                                              =",
+            "=        OOOOOOOO      VVV          VVV  EEEEEEEEEEEEEEEE  RRRRRRRRRRRRR       =",
+            "=      OOOOOOOOOOOO    VVV          VVV  EEEEEEEEEEEEEEEE  RRRRRRRRRRRRRR      =",
+            "=     OOOO      OOOO    VVV        VVV   EEE               RRR         RRR     =",
+            "=    OOO          OOO    VVV      VVV    EEE               RRR          RRR    =",
+            "=    OOO          OOO    VVV      VVV    EEEEEEEEEEEEE     RRRRRRRRRRRRRR      =",
+            "=    OOO          OOO     VVV    VVV     EEEEEEEEEEEEE     RRRRRRRRRRRRRR      =",
+            "=    OOO          OOO      VVV  VVV      EEE               RRR         RRR     =",
+            "=     OOOO      OOOO       VVV  VVV      EEE               RRR          RRR    =",
+            "=      OOOOOOOOOOOO         VVVVVV       EEEEEEEEEEEEEEEE  RRR          RRR    =",
+            "=        OOOOOOOO            VVVV        EEEEEEEEEEEEEEEE  RRR          RRR    =",
+            "================================================================================",
+        };
+
         private static Game instance;
 
         private Entity player;
@@ -51,7 +78,7 @@
                 this.gameBounds.YMax,
                 this.gameBounds.YMax + 2);
 
-            ConsoleExtended.DrawBounds(gameInfoBounds);
+            ConsoleExtended.DrawBounds(this.gameInfoBounds);
 
             this.entityBounds = new Bounds(
                 this.gameBounds.XMin + 1,
@@ -64,10 +91,13 @@
             this.player = new Player(this.entityBounds);
             this.enemies = new List<Entity>();
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 15; i++)
             {
                 this.enemies.Add(
-                    new Enemy((((float)Rand.NextDouble() * 0.5f) + 0.75f) * 12.5f, this.entityBounds, 125));
+                    new Enemy(
+                        (((float)Rand.NextDouble() * 0.5f) + 0.75f) * 12.5f, 
+                        this.entityBounds, 
+                        Rand.Next(75, 100)));
             }
 
             this.stopwatch = new Stopwatch();
@@ -114,7 +144,7 @@
                     enemy.Draw();
                 }
 
-                Console.SetCursorPosition(2, Console.WindowHeight - 2);
+                Console.SetCursorPosition(2, Bounds.ConsoleBounds.YMax - 1);
                 Console.Write(string.Format("Score: {0}", this.score));
             }
         }
@@ -128,11 +158,11 @@
         {
             Console.Clear();
 
-            ConsoleExtended.DrawArray(GameOverText, Position.zero);
+            ConsoleExtended.DrawArray(gameOverText, Position.Zero);
 
             ConsoleExtended.DrawBounds(this.gameInfoBounds);
 
-            Console.SetCursorPosition(5, Console.WindowHeight - 2);
+            Console.SetCursorPosition(5, Bounds.ConsoleBounds.YMax - 1);
             if (this.score < 20)
             {
                 Console.Write(string.Format("Pathetic... You scored {0} Points", this.score));
@@ -163,7 +193,7 @@
             }
             else if (this.score < 5000)
             {
-                Console.Write(string.Format("Somebody''s using a hacked client or something -- {0} Points", this.score));
+                Console.Write(string.Format("Somebody's using a hacked client or something -- {0} Points", this.score));
             }
             else
             {
@@ -178,31 +208,5 @@
             Instance = new Game();
             Instance.UpdateLoop();
         }
-
-        private static string[] GameOverText = new string[] 
-        {   "================================================================================",
-            "=        GGGGGGG           AAAAAAAA      MMM          MMM  EEEEEEEEEEEEEEEE    =",
-            "=      GGGGGGGGGGG        AAAAAAAAAA     MMMM        MMMM  EEEEEEEEEEEEEEEE    =",
-            "=     GGGG     GGGG      AAA      AAA    MMMMM      MMMMM  EEE                 =",
-            "=    GGG         GGG    AAA        AAA   MMMMMM    MMMMMM  EEE                 =",
-            "=    GGG               AAA          AAA  MMM MMM  MMM MMM  EEEEEEEEEEEEE       =",
-            "=    GGG      GGGGGGG  AAAAAAAAAAAAAAAA  MMM  MMMMMM  MMM  EEEEEEEEEEEEE       =",
-            "=    GGG         GGG   AAAAAAAAAAAAAAAA  MMM   MMMM   MMM  EEE                 =",
-            "=     GGGG     GGGG    AAA          AAA  MMM    MM    MMM  EEE                 =",
-            "=      GGGGGGGGGGG     AAA          AAA  MMM          MMM  EEEEEEEEEEEEEEEE    =",
-            "=        GGGGGGG       AAA          AAA  MMM          MMM  EEEEEEEEEEEEEEEE    =",
-            "=                                                                              =",
-            "=        OOOOOOOO      VVV          VVV  EEEEEEEEEEEEEEEE  RRRRRRRRRRRRR       =",
-            "=      OOOOOOOOOOOO    VVV          VVV  EEEEEEEEEEEEEEEE  RRRRRRRRRRRRRR      =",
-            "=     OOOO      OOOO    VVV        VVV   EEE               RRR         RRR     =",
-            "=    OOO          OOO    VVV      VVV    EEE               RRR          RRR    =",
-            "=    OOO          OOO    VVV      VVV    EEEEEEEEEEEEE     RRRRRRRRRRRRRR      =",
-            "=    OOO          OOO     VVV    VVV     EEEEEEEEEEEEE     RRRRRRRRRRRRRR      =",
-            "=    OOO          OOO      VVV  VVV      EEE               RRR         RRR     =",
-            "=     OOOO      OOOO       VVV  VVV      EEE               RRR          RRR    =",
-            "=      OOOOOOOOOOOO         VVVVVV       EEEEEEEEEEEEEEEE  RRR          RRR    =",
-            "=        OOOOOOOO            VVVV        EEEEEEEEEEEEEEEE  RRR          RRR    =",
-            "================================================================================",
-        };
     }
 }
