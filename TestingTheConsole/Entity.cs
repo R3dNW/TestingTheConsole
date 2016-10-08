@@ -1,7 +1,7 @@
 ﻿namespace TestingTheConsole
 {
     using System;
-    using ConsolePositions;
+    using CustomExtentions;
 
     /// <summary>
     /// An entity class to deal with all entities within the game.
@@ -120,8 +120,7 @@
 
             this.lastDrawPosition = this.Position.Clone();
 
-            Console.SetCursorPosition(this.Position.X, this.Position.Y);
-            Console.Write(this.Symbol);
+            ConsoleExtended.DrawSymbol(this.Symbol, this.Position);
         }
 
         public bool IsCollidingWith(Entity other)

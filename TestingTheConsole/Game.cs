@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using ConsolePositions;
+    using CustomExtentions;
 
     /// <summary>
     /// This is the main Game class.
@@ -21,6 +21,9 @@
 
         private int score;
 
+        private Bounds gameBounds;
+        private Bounds entityBounds;
+
         public Game()
         {
             if (Instance != null)
@@ -33,17 +36,26 @@
             Console.CursorVisible = false;
             Console.Clear();
 
+            this.gameBounds = new Bounds(0, Bounds.ConsoleBounds.XMax, 0, Bounds.ConsoleBounds.YMax - 3);
+
+            ConsoleExtended.DrawBounds(gameBounds);
+
+            ConsoleExtended.DrawBounds(new Bounds(gameBounds.XMin, gameBounds.XMax, gameBounds.YMax, gameBounds.YMax + 2));
+
+            this.entityBounds = new Bounds(gameBounds.XMin + 1,
+                                             gameBounds.XMax - 1,
+                                             gameBounds.YMin + 1,
+                                             gameBounds.YMax - 1);
+
             Rand = new Random();
 
-            this.player = new Player(new Bounds(2, Bounds.ConsoleBounds.XMax - 3, 1, Bounds.ConsoleBounds.YMax - 3));
+            this.player = new Player(this.entityBounds);
             this.enemies = new List<Entity>();
 
             for (int i = 0; i < 20; i++)
             {
                 this.enemies.Add(
-                    new Enemy(
-                        (((float)Rand.NextDouble() * 0.5f) + 0.75f) * 12.5f,
-                        new Bounds(0, Bounds.ConsoleBounds.XMax - 1, 1, Bounds.ConsoleBounds.YMax - 3)));
+                    new Enemy((((float)Rand.NextDouble() * 0.5f) + 0.75f) * 12.5f, this.entityBounds));
             }
 
             this.stopwatch = new Stopwatch();
@@ -90,7 +102,7 @@
                     enemy.Draw();
                 }
 
-                Console.SetCursorPosition(0, Console.WindowHeight - 1);
+                Console.SetCursorPosition(2, Console.WindowHeight - 3);
                 Console.Write(string.Format("Score: {0}", this.score));
             }
         }
@@ -105,7 +117,9 @@
             Console.Clear();
             Console.SetCursorPosition(2, 1);
             Console.WriteLine("Game Over!");
-            
+
+            ConsoleExtended.DrawBounds(gameBounds);
+
             Console.SetCursorPosition(2, 3);
             if (score > 0)
             {

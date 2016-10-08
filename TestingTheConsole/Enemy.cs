@@ -1,7 +1,6 @@
 ﻿namespace TestingTheConsole
 {
     using System;
-    using ConsolePositions;
     using CustomExtentions;
 
     /// <summary>
@@ -25,8 +24,9 @@
             Bounds bounds,
             float maxSpeed = 100) : base(
                 '#',
-                Console.WindowWidth,
-                Game.Rand.Next(bounds.YMin, bounds.YMax))
+                bounds.XMax + 1,
+                Game.Rand.Next(bounds.YMin, bounds.YMax + 1),
+                bounds)
         {
             this.Speed = speed;
             this.MaxSpeed = maxSpeed;
@@ -74,16 +74,18 @@
 
             this.timeSinceLastMoveMS -= this.TimeBetweenMovesMS;
 
-            if (this.Position.X <= 0)
+            if (this.Position.X <= EntityBounds.XMin)
             {
-                this.Position.X = Console.WindowWidth + 1;
-                this.Position.Y = Game.Rand.Next(0, Console.WindowHeight - 2);
+                this.Position.X = EntityBounds.XMax + 1;
+                this.Position.Y = Game.Rand.Next(EntityBounds.YMin, EntityBounds.YMax + 1);
 
                 this.sleepTimeMS = Game.Rand.Next(500, 2500);
 
                 this.Speed = MathExtended.Clamp(this.Speed * 1.25f, 0, this.MaxSpeed);
 
                 Game.Instance.ScoreAdd();
+
+                return;
             }
 
             this.Position.X -= 1;

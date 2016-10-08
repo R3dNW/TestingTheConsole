@@ -1,7 +1,7 @@
 ﻿namespace TestingTheConsole
 {
     using System;
-    using ConsolePositions;
+    using CustomExtentions;
 
     /// <summary>
     /// A simple class to act as a player for user.

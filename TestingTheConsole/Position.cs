@@ -1,4 +1,4 @@
-﻿namespace ConsolePositions
+﻿namespace CustomExtentions
 {
     using System;
 

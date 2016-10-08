@@ -1,7 +1,6 @@
-﻿namespace ConsolePositions
+﻿namespace CustomExtentions
 {
     using System;
-    using CustomExtentions;
 
     public class Bounds
     {
@@ -38,7 +37,7 @@
             {
                 if (consoleBounds == null)
                 {
-                    consoleBounds = new Bounds(0, Console.WindowWidth, 0, Console.WindowHeight);
+                    consoleBounds = new Bounds(0, Console.WindowWidth-1, 0, Console.WindowHeight-1);
                 }
 
                 return consoleBounds;
@@ -46,7 +45,13 @@
 
             set
             {
-                Console.SetWindowSize(value.XMax, value.YMax);
+                if (value.XMin != 0 || value.YMin != 0)
+                {
+                    throw new Exception(string.Format("The Console's Bounds must have minimums of 0, Not ({0}, {1})", 
+                                                      value.XMin, 
+                                                      value.YMin));
+                }
+                Console.SetWindowSize(value.XMax-1, value.YMax-1);
                 consoleBounds = value;
             }
         }
@@ -103,9 +108,18 @@
             }
         }
 
+        public Box Box
+        {
+            get
+            {
+                return new Box(this.XMax - this.XMin,
+                               this.YMax - this.YMin);
+            }
+        }
+
         public bool BoundsContainPoint(Position position)
         {
-            if (position.X < this.XMin || position.X >= this.XMax || position.Y < this.YMin || position.Y >= this.YMax)
+            if (position.X < this.XMin || position.X > this.XMax || position.Y < this.YMin || position.Y > this.YMax)
             {
                 return false;
             }
