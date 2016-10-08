@@ -4,10 +4,10 @@
 
     public static class ConsoleExtended
     {
-        public static void DrawBounds(Bounds bounds, char symbol='=')
+        public static void DrawBounds(Bounds bounds, char symbol = '=')
         {
             Console.SetCursorPosition(bounds.XMin, bounds.YMin);
-            Console.WriteLine(new String(symbol, bounds.Box.Width+1));
+            Console.WriteLine(new string(symbol, bounds.Box.Width + 1));
 
             for (int yPos = bounds.YMin; yPos < bounds.YMax; yPos++)
             {
@@ -16,7 +16,7 @@
             }
 
             Console.SetCursorPosition(bounds.XMin, bounds.YMax);
-            Console.WriteLine(new String(symbol, bounds.Box.Width+1));
+            Console.WriteLine(new string(symbol, bounds.Box.Width + 1));
         }
 
         public static void SetCursorPosition(Position position)

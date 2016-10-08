@@ -79,14 +79,16 @@
 
         protected char Symbol { get; set; }
 
-        protected Position LastDrawPosition {
+        protected Position LastDrawPosition
+        {
             get
             {
-                return lastDrawPosition;
+                return this.lastDrawPosition;
             }
+
             set
             {
-                lastDrawPosition = value;
+                this.lastDrawPosition = value;
             }
         }
 

@@ -36,6 +36,7 @@
             {
                 return this.height;
             }
+
             set
             {
                 this.height = value;

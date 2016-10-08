@@ -32,7 +32,7 @@
             this.MaxSpeed = maxSpeed;
             this.sleepTimeMS = Game.Rand.Next(0, 4000);
 
-            lastPositions = new Position[trailLength];
+            this.lastPositions = new Position[this.trailLength];
         }
 
         public float Speed { get; set; }

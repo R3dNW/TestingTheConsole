@@ -37,7 +37,7 @@
             {
                 if (consoleBounds == null)
                 {
-                    consoleBounds = new Bounds(0, Console.WindowWidth-1, 0, Console.WindowHeight-1);
+                    consoleBounds = new Bounds(0, Console.WindowWidth - 1, 0, Console.WindowHeight - 1);
                 }
 
                 return consoleBounds;
@@ -47,11 +47,13 @@
             {
                 if (value.XMin != 0 || value.YMin != 0)
                 {
-                    throw new Exception(string.Format("The Console's Bounds must have minimums of 0, Not ({0}, {1})", 
-                                                      value.XMin, 
-                                                      value.YMin));
+                    throw new Exception(string.Format(
+                        "The Console's Bounds must have minimums of 0, Not ({0}, {1})",
+                        value.XMin,
+                        value.YMin));
                 }
-                Console.SetWindowSize(value.XMax-1, value.YMax-1);
+
+                Console.SetWindowSize(value.XMax - 1, value.YMax - 1);
                 consoleBounds = value;
             }
         }
@@ -112,8 +114,9 @@
         {
             get
             {
-                return new Box(this.XMax - this.XMin,
-                               this.YMax - this.YMin);
+                return new Box(
+                    this.XMax - this.XMin,
+                    this.YMax - this.YMin);
             }
         }
 

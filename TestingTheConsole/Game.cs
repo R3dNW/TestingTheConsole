@@ -38,14 +38,19 @@
 
             this.gameBounds = new Bounds(0, Bounds.ConsoleBounds.XMax, 0, Bounds.ConsoleBounds.YMax - 3);
 
-            ConsoleExtended.DrawBounds(gameBounds);
+            ConsoleExtended.DrawBounds(this.gameBounds);
 
-            ConsoleExtended.DrawBounds(new Bounds(gameBounds.XMin, gameBounds.XMax, gameBounds.YMax, gameBounds.YMax + 2));
+            ConsoleExtended.DrawBounds(new Bounds(
+                this.gameBounds.XMin, 
+                this.gameBounds.XMax, 
+                this.gameBounds.YMax, 
+                this.gameBounds.YMax + 2));
 
-            this.entityBounds = new Bounds(gameBounds.XMin + 1,
-                                             gameBounds.XMax - 1,
-                                             gameBounds.YMin + 1,
-                                             gameBounds.YMax - 1);
+            this.entityBounds = new Bounds(
+                this.gameBounds.XMin + 1,
+                this.gameBounds.XMax - 1,
+                this.gameBounds.YMin + 1,
+                this.gameBounds.YMax - 1);
 
             Rand = new Random();
 
@@ -118,10 +123,10 @@
             Console.SetCursorPosition(2, 1);
             Console.WriteLine("Game Over!");
 
-            ConsoleExtended.DrawBounds(gameBounds);
+            ConsoleExtended.DrawBounds(this.gameBounds);
 
             Console.SetCursorPosition(2, 3);
-            if (score > 0)
+            if (this.score > 0)
             {
                 Console.WriteLine(string.Format("Score: {0}", this.score));
             }
