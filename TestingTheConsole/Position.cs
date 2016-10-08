@@ -1,4 +1,4 @@
-﻿namespace TestingTheConsole
+﻿namespace ConsolePositions
 {
     using System;
 
@@ -6,7 +6,7 @@
     /// A basic class to store positions in the console.
     /// These value will be integers and will be 2-Dimensional.
     /// </summary>
-    public class Position
+    public class Position : IEquatable<Position>
     {
         private int x = 0;
         private int y = 0;
@@ -25,33 +25,23 @@
         
         public int X
         {
-            get
-            {
-                return this.x;
-            }
+            get { return this.x; }
 
-            set
-            {
-                /*if (value < 0 || value > Console.WindowWidth) {
-                    throw new Exception("Position -- Cannot have a position outside of the console's coordinates");
-                }*/
-                this.x = value;
-            }
+            set { this.x = value; }
         }
 
         public int Y
         {
+            get { return this.y; }
+
+            set { this.y = value; }
+        }
+
+        public bool OutOfConsole
+        {
             get
             {
-                return this.y;
-            }
-
-            set
-            {
-                /*if (value < 0 || value > Console.WindowWidth) {
-                    throw new Exception("Position -- Cannot have a position outside of the console's coordinates");
-                }*/
-                this.y = value;
+                return Bounds.ConsoleBounds.BoundsContainPoint(this);
             }
         }
 
@@ -63,6 +53,21 @@
         public Position Clone()
         {
             return Clone(this);
+        }
+
+        public bool Equals(Position other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            if (this.X == other.X && this.Y == other.Y)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

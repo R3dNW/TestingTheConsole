@@ -1,6 +1,7 @@
 ﻿namespace TestingTheConsole
 {
     using System;
+    using ConsolePositions;
     using CustomExtentions;
 
     /// <summary>
@@ -13,12 +14,25 @@
 
         private int sleepTimeMS;
 
-        public Enemy(float speed, float maxSpeed = 100) : base('#', Console.WindowWidth - 1, Game.Rand.Next(0, Console.WindowHeight - 2))
+        private char[] trailSymbols = new char[4] { '#', '>', '=', '-' };
+
+        private int trailLength = 4;
+
+        private Position[] lastPositions;
+
+        public Enemy(
+            float speed,
+            Bounds bounds,
+            float maxSpeed = 100) : base(
+                '#',
+                Console.WindowWidth,
+                Game.Rand.Next(bounds.YMin, bounds.YMax))
         {
             this.Speed = speed;
             this.MaxSpeed = maxSpeed;
             this.sleepTimeMS = Game.Rand.Next(0, 4000);
-            this.Hidden = true;
+
+            lastPositions = new Position[trailLength];
         }
 
         public float Speed { get; set; }
@@ -51,7 +65,6 @@
             else
             {
                 this.timeSinceLastMoveMS += deltaTimeMS;
-                this.Hidden = false;
             }
 
             if (this.timeSinceLastMoveMS < this.TimeBetweenMovesMS)
@@ -61,19 +74,19 @@
 
             this.timeSinceLastMoveMS -= this.TimeBetweenMovesMS;
 
-            this.Position.X -= 1;
-
             if (this.Position.X <= 0)
             {
-                this.Position.X = Console.WindowWidth - 1;
+                this.Position.X = Console.WindowWidth + 1;
                 this.Position.Y = Game.Rand.Next(0, Console.WindowHeight - 2);
 
                 this.sleepTimeMS = Game.Rand.Next(500, 2500);
 
-                this.Hidden = true;
-
                 this.Speed = MathExtended.Clamp(this.Speed * 1.25f, 0, this.MaxSpeed);
+
+                Game.Instance.ScoreAdd();
             }
+
+            this.Position.X -= 1;
 
             this.Update(0);
         }
